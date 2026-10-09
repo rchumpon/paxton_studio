@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
 import About from "./pages/About";
@@ -8,24 +11,18 @@ import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import PlaceOrder from "./pages/PlaceOrder";
 import Orders from "./pages/Orders";
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import SearchBar from "./components/layout/SearchBar";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import NotFound from "./pages/NotFound";
+import MainLayout from "./pages/MainLayout";
 
 const App = () => {
   return (
     <>
-      <div className="bg-linear-to-b from-background/20 via-secondary to-background">
-        <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-          <ToastContainer />
-          <Navbar />
-          <SearchBar />
-        </div>
-      </div>
-      <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
-        <Routes>
+      <ToastContainer />
+
+      <Routes>
+        {/* Normal Pages */}
+
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/about" element={<About />} />
@@ -35,9 +32,11 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/place-order" element={<PlaceOrder />} />
           <Route path="/orders" element={<Orders />} />
-        </Routes>
-      </div>
-      <Footer />
+        </Route>
+
+        {/* Display 404 page - No Navbar and Footer */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   );
 };

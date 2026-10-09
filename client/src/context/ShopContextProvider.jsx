@@ -77,7 +77,9 @@ const ShopContextProvider = (props) => {
             // Add the quantity to the total
             totalCount += cartItems[items][item];
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("Error calculating cart count:", error);
+        }
       }
     }
     // Return the total number of products

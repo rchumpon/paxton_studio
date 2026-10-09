@@ -8,17 +8,19 @@ const ApiError = require("../utilities/ApiError");
 const apiErrorHandler = (err, req, res, next) => {
   // Check if the error is a custom ApiError
   if (err instanceof ApiError) {
-    res.status(err.code).json(err.message);
-    return;
-  } else {
-    // Log unexpected errors to the server console
-    console.error(err);
-
-    // Send a generic error response to the client
-    res.status(500).json({
-      message: "Oops! Something went wrong - Please try again later",
+    return res.status(err.code).json({
+      success: false,
+      message: err.message,
     });
   }
+  // Log unexpected errors to the server console
+  console.error(err);
+
+  // Handle unexpected server errors
+  return res.status(500).json({
+    success: false,
+    message: "Oops! Something went wrong - Please try again later",
+  });
 };
 
 module.exports = apiErrorHandler;

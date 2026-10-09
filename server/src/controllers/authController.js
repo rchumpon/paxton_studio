@@ -5,6 +5,8 @@
 // Get Firestore database connection
 // This allows us to access collections such as "users"
 const { db } = require("../config/db");
+const userSchema = require("../schemas/userSchema");
+const loginSchema = require("../schemas/loginSchema");
 
 // Import custom error handler
 // Used to return appropriate HTTP errors such as 400 and 500
@@ -55,24 +57,40 @@ module.exports = {
   // Register a new user
   async register(req, res, next) {
     try {
-      // Get the registration details sent in the request body
-      const { username, email, password } = req.body;
+      // Validate incoming registration data using Joi
+      const { error, value } = userSchema.validate(req.body, {
+        abortEarly: false,
+      });
+
+      // Return validation errors
+      if (error) {
+        return next(
+          ApiError.badRequest(
+            error.details.map((item) => item.message).join(","),
+          ),
+        );
+      }
+      // Get validated user details
+      const { username, email, password } = value;
 
       // Check whether a user with this email already exists
       const userMatch = await findUser(email);
+
       // Stop registration if the email is already registered
       if (userMatch.length > 0) {
         return next(ApiError.badRequest("This email already exists"));
       }
 
-      // Reference the "users collection in Firestore"
+      // Reference Firestore users collection
       const usersRef = db.collection("users");
+
       // Create a new user document
       // The password is hashed before it is stored in the database
       const response = await usersRef.add({
-        username: username,
-        email: email,
+        username,
+        email,
         password: await hashPassword(password),
+        cartData: {},
         isAdmin: false,
       });
 
@@ -84,7 +102,7 @@ module.exports = {
       const userJSON = await userDetailsToJSON(response.id);
 
       // Create a JWT and send it back to the client
-      res.send({
+      return res.status(201).json({
         token: jwtSignUser(userJSON),
       });
     } catch (err) {
@@ -100,33 +118,51 @@ module.exports = {
 
   // Login an existing user
   async login(req, res, next) {
-    // Save form data to local variables
-    const { email, password } = req.body;
+    try {
+      // Validate login details using Joi
+      const { error, value } = loginSchema.validate(req.body, {
+        abortEarly: false,
+      });
 
-    // Check user is saved to the db already
-    const userMatch = await findUser(email);
-    if (!userMatch.length) {
-      return next(ApiError.badRequest("Incorrect email or password"));
+      if (error) {
+        return next(
+          ApiError.badRequest(
+            error.details.map((item) => item.message).join(", "),
+          ),
+        );
+      }
+
+      // Get validated login details
+      const { email, password } = value;
+
+      // Check user is saved to the db already
+      const userMatch = await findUser(email);
+      if (!userMatch.length) {
+        return next(ApiError.badRequest("Incorrect email or password"));
+      }
+
+      // Compare entered password with hashed password
+      const passwordMatch = await comparePassword(
+        userMatch[0].password,
+        password,
+      );
+
+      if (!passwordMatch) {
+        return next(ApiError.badRequest("Incorrect email or password"));
+      }
+
+      // Structure the data payload to be saved within the token
+      // Sensitive information such as the password is excluded
+      const userJSON = await userDetailsToJSON(userMatch[0].id);
+
+      // Create a JWT and send it back to the client
+      return res.status(200).json({
+        token: jwtSignUser(userJSON),
+      });
+    } catch (err) {
+      return next(ApiError.internal("Unable to login at this time...", err));
     }
-
-    const passwordMatch = await comparePassword(
-      userMatch[0].password,
-      password,
-    );
-
-    if (!passwordMatch) {
-      return next(ApiError.badRequest("Incorrect email or password"));
-    }
-
-    // Dealing with response & minting the token
-    console.log(`Success - user created: ${userMatch[0].id}`);
-    // Structure the data payload to be saved within the token
-    // Sensitive information such as the password is excluded
-    const userJSON = await userDetailsToJSON(userMatch[0].id);
-
-    // Create a JWT and send it back to the client
-    res.send({
-      token: jwtSignUser(userJSON),
-    });
   },
+
+  async AdminLogin(req, res, next) {},
 };
