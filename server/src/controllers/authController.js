@@ -103,6 +103,8 @@ module.exports = {
 
       // Create a JWT and send it back to the client
       return res.status(201).json({
+        success: true,
+        message: "Registration successful",
         token: jwtSignUser(userJSON),
       });
     } catch (err) {
@@ -157,6 +159,8 @@ module.exports = {
 
       // Create a JWT and send it back to the client
       return res.status(200).json({
+        success: true,
+        message: "Login successful",
         token: jwtSignUser(userJSON),
       });
     } catch (err) {

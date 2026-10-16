@@ -3,8 +3,10 @@ const express = require("express");
 const router = express.Router();
 
 // Import route modules
-const authRoutes = require("./authRoute");
+const authRoute = require("./authRoute");
 const productRoute = require("./productRoute");
+const userRoute = require("../routes/userRoute");
+const cartRoute = require("./cartRoute");
 
 // Endpoints for "/" path
 module.exports = () => {
@@ -14,10 +16,14 @@ module.exports = () => {
   });
 
   // Authentication routes: api/auth
-  router.use("/auth", authRoutes());
+  router.use("/auth", authRoute());
 
   // Product routes: /api/product
   router.use("/product", productRoute());
+
+  router.use("/user", userRoute());
+
+  router.use("/cart", cartRoute());
 
   return router;
 };

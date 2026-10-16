@@ -1,10 +1,72 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ShopContext } from "../context/ShopContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const [currentState, setCurrentState] = useState("Sign Up");
+  const [currentState, setCurrentState] = useState("Login");
+
+  const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
+
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    try {
+      if (currentState === "Sign Up") {
+        // Send registration details to the backend
+        const response = await axios.post(backendUrl + "/api/auth/register", {
+          username: name,
+          email,
+          password,
+        });
+
+        // Check if registration was successful
+        if (response.data.success) {
+          // Save the JWT token in React state
+          setToken(response.data.token);
+
+          // Save the JWT token in localStorage
+          localStorage.setItem("token", response.data.token);
+        } else {
+          // Display registration error
+          toast.error(response.data.message);
+        }
+      } else {
+        // Send login details to the backend
+        const response = await axios.post(backendUrl + "/api/auth/login", {
+          email,
+          password,
+        });
+
+        // Check if login was successful
+        if (response.data.success) {
+          // Save the JWT token in React state
+          setToken(response.data.token);
+
+          // Save the JWT token in localStorage
+          localStorage.setItem("token", response.data.token);
+        } else {
+          toast.error(response.data.message);
+        }
+      }
+    } catch (err) {
+      console.error("Authentication Error:", err);
+      // Display the backend error message or fallback message
+      toast.error(
+        err.response?.data?.message ||
+          "Authentication failed. Please try again.",
+      );
+    }
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
 
   return (
     <form
@@ -19,7 +81,9 @@ const Login = () => {
         ""
       ) : (
         <input
+          onChange={(e) => setName(e.target.value)}
           type="text"
+          value={name}
           placeholder="Name"
           className="w-full px-3 py-2 border border-border"
           required
@@ -27,13 +91,17 @@ const Login = () => {
       )}
 
       <input
+        onChange={(e) => setEmail(e.target.value)}
         type="email"
+        value={email}
         placeholder="Email"
         className="w-full px-3 py-2 border border-border"
         required
       />
       <input
+        onChange={(e) => setPassword(e.target.value)}
         type="password"
+        value={password}
         placeholder="Password"
         className="w-full px-3 py-2 border border-border"
         required

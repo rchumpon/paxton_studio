@@ -1,19 +1,25 @@
-import { useState } from "react";
-// Import the product data from our assets file
-import { products } from "../assets/assets";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 // Import the ShopContext so we can provide data to
 // other components in the application
 import { ShopContext } from "../context/ShopContext";
+
 // Import toast so we can display message to the user
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const ShopContextProvider = (props) => {
   const currency = "$";
   // Fixed delivery fee
   const delivery_fee = 10;
+
+  // Get the backend API URL from the Vite environment variables
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   // Store the current search text
   const [search, setSearch] = useState("");
+
   // Control whether the search bar is visible
   // false = hidden
   // true = visible
@@ -21,6 +27,12 @@ const ShopContextProvider = (props) => {
 
   // Store all cart items in state
   const [cartItems, setCartItems] = useState({});
+
+  // Store the products retrieved from the backend API
+  // Initially, the products array is empty
+  const [products, setProducts] = useState([]);
+
+  const [token, setToken] = useState("");
 
   const navigate = useNavigate();
 
@@ -109,6 +121,13 @@ const ShopContextProvider = (props) => {
     for (const items in cartItems) {
       // Find the product information using its ID
       let itemInfo = products.find((product) => product.id === items);
+
+      // Skip this product if it no longer exists
+      if (!itemInfo) {
+        console.warn("Product not found in cart:", items);
+        continue;
+      }
+
       // Loop through each size of the current product
       for (const item in cartItems[items]) {
         try {
@@ -117,12 +136,48 @@ const ShopContextProvider = (props) => {
             // product price * quantity
             totalAmount += itemInfo.price * cartItems[items][item];
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("Error calculating cart amount:", error);
+        }
       }
     }
     // Return the total cart price
     return totalAmount;
   };
+
+  // Fetch all products from the backend API
+  const getProductsData = async () => {
+    try {
+      // Send GET request to retrieve all products
+      const response = await axios.get(backendUrl + "/api/product/list");
+
+      // Check whether the request was successful
+      if (response.data.success) {
+        // Store the retrieved products in React state
+        setProducts(response.data.products);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (err) {
+      console.error("Error fetching products:", err);
+
+      // Display the backend error message or a fallback message
+      toast.error(
+        err.response?.data?.message ||
+          "Failed to load products. Please try again.",
+      );
+    }
+  };
+
+  useEffect(() => {
+    getProductsData();
+  }, []);
+
+  useEffect(() => {
+    if (!token && localStorage.getItem("token")) {
+      setToken(localStorage.getItem("token"));
+    }
+  });
 
   // Put all the data and functions that
   // other components need to access into one object
@@ -146,6 +201,13 @@ const ShopContextProvider = (props) => {
     updateQuantity,
     getCartAmount,
     navigate,
+
+    // Backend URL
+    backendUrl,
+
+    // Authentication
+    setToken,
+    token,
   };
 
   // Provide all of the values above to components inside ShopContext.Provider

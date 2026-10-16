@@ -120,18 +120,10 @@ const Collection = () => {
   // Run Filter
   //=====================================
 
-  // useEffect(() => {
-  //   setFilterProducts(products);
-  // }, []);
-
   // Run applyFilter() whenever category changes, subCategory changes, search changes, and showSearch changes
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory, search, showSearch]);
-
-  // useEffect(() => {
-  //   console.log(subCategory);
-  // }, [subCategory]);
+  }, [category, subCategory, search, showSearch, products]);
 
   //=====================================
   // Run Sort

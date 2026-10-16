@@ -284,25 +284,26 @@ module.exports = {
 
   // ----------------------------------
   // Remove a product
-  // POST /api/product/remove
+  // DELETE /api/product/:productId
   // ----------------------------------
 
   async removeProduct(req, res, next) {
     try {
-      // Get the product ID from the request body
-      const { productId } = req.body;
+      // Get the product ID from the URL parameters
+      const { productId } = req.params;
 
       // Check if product ID is provided
       if (!productId || typeof productId !== "string") {
         return next(ApiError.badRequest("Product ID is required"));
       }
 
-      // Get a reference to the product document
+      // Get a reference to the product document in Firestore
       const productRef = db.collection("products").doc(productId);
 
-      // Check if the product exists
+      /// Retrieve the product from Firestore
       const snapshot = await productRef.get();
 
+      // Check if the product exists
       if (!snapshot.exists) {
         return next(ApiError.notFound("Product not found"));
       }

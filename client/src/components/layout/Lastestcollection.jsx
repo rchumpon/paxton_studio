@@ -1,17 +1,15 @@
 import { ShopContext } from "../../context/ShopContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Title from "../common/Title";
 import ProductItem from "./ProductItem";
 
 const Latestcollection = () => {
   const { products } = useContext(ShopContext);
-  const latestProducts = products.slice(0, 10);
+  const [latestProducts, setLatestProducts] = useState([]);
 
-  // const [latestProducts, setLatestProducts] = useState([]);
-
-  // useEffect(() => {
-  //   setLatestProducts(products.slice(0, 10));
-  // }, []);
+  useEffect(() => {
+    setLatestProducts(products.slice(0, 10));
+  }, [products]);
 
   return (
     <div className="my-10">

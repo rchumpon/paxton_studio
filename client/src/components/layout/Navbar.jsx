@@ -13,7 +13,21 @@ import { ShopContext } from "../../context/ShopContext";
 function Navbar() {
   const [visible, setVisible] = useState(false);
 
-  const { setShowSearch, getCartCount } = useContext(ShopContext);
+  const {
+    setShowSearch,
+    getCartCount,
+    navigate,
+    token,
+    setToken,
+    setCartItems,
+  } = useContext(ShopContext);
+
+  const logout = () => {
+    navigate("/login");
+    localStorage.removeItem("token");
+    setToken("");
+    setCartItems({});
+  };
 
   return (
     <div className="flex items-center justify-between py-5 font-medium">
@@ -46,16 +60,27 @@ function Navbar() {
           className="w-5 text-muted cursor-pointer"
         />
         <div className="group relative">
-          <Link to="/login">
-            <FaUser className="w-5 text-muted cursor-pointer" />
-          </Link>
-          <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-            <div className="flex flex-col bg-slate-100 text-gray-500 gap-2 w-36 py-3 px-5">
-              <p className="cursor-pointer  hover:text-black">My Profile</p>
-              <p className="cursor-pointer hover:text-black">Orders</p>
-              <p className="cursor-pointer hover:text-black">Log out</p>
+          <FaUser
+            onClick={() => (token ? null : navigate("/login"))}
+            className="w-5 text-muted cursor-pointer"
+          />
+          {/* Dropdown Menu */}
+          {token && (
+            <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
+              <div className="flex flex-col bg-slate-100 text-gray-500 gap-2 w-36 py-3 px-5">
+                <p className="cursor-pointer  hover:text-black">My Profile</p>
+                <p
+                  onClick={() => navigate("/orders")}
+                  className="cursor-pointer hover:text-black"
+                >
+                  Orders
+                </p>
+                <p onClick={logout} className="cursor-pointer hover:text-black">
+                  Log out
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <Link to="/cart" className="relative">
           <FaShoppingCart className="w-5 min-w-5 text-muted" />
