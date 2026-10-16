@@ -5,7 +5,7 @@ const router = express.Router();
 // Import route modules
 const authRoute = require("./authRoute");
 const productRoute = require("./productRoute");
-const userRoute = require("../routes/userRoute");
+const userRoute = require("./userRoute");
 const cartRoute = require("./cartRoute");
 
 // Endpoints for "/" path
