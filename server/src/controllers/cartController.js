@@ -19,6 +19,12 @@ module.exports = {
       // Get product ID and selected size from request body
       const { itemId, size } = req.body;
 
+      console.log("User ID:", userId);
+      console.log("Item ID:", itemId);
+      console.log("Item ID Type:", typeof itemId);
+      console.log("Size:", size);
+      console.log("Size Type:", typeof size);
+
       // Validate incoming cart details
       if (
         typeof itemId !== "string" ||
@@ -59,7 +65,7 @@ module.exports = {
           }
         } else {
           // Add a new product with the selected size
-          cartData[item] = {
+          cartData[itemId] = {
             [size]: 1,
           };
         }
@@ -158,13 +164,14 @@ module.exports = {
   },
 
   // Get user cart data
-  async getUserCart(req, res) {
+  async getUserCart(req, res, next) {
     try {
       // Get the authenticated user's ID from JWT middleware
       const userId = req.userId;
 
       // Reference the user's document in Firestore
-      const userRef = db.collection("user").doc(userId);
+      const userRef = db.collection("users").doc(userId);
+
       // Retrieve the user's document
       const userDoc = await userRef.get();
 
@@ -179,6 +186,7 @@ module.exports = {
       //return the user's cart data to the frontend
       return res.status(200).json({ success: true, cartData });
     } catch (err) {
+      console.error("Get User Cart Error:", err);
       return next(
         ApiError.internal(
           "Cart data could not be retrieved at this time...",

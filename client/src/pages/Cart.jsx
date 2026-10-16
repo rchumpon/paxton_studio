@@ -14,27 +14,27 @@ const Cart = () => {
 
   // Run whenever cartItems changes
   useEffect(() => {
-    // Temporary array for storing cart items
-    const temporaryData = [];
+    if (products.length > 0) {
+      // Temporary array for storing cart items
+      const temporaryData = [];
 
-    // Go through each size for that product
-    for (const items in cartItems) {
-      // Only add items with a quantity greater than 0
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) {
-          temporaryData.push({
-            id: items,
-            size: item,
-            quantity: cartItems[items][item],
-          });
+      // Go through each size for that product
+      for (const items in cartItems) {
+        // Only add items with a quantity greater than 0
+        for (const item in cartItems[items]) {
+          if (cartItems[items][item] > 0) {
+            temporaryData.push({
+              id: items,
+              size: item,
+              quantity: cartItems[items][item],
+            });
+          }
         }
       }
+      // Save the cart items into React state
+      setCartData(temporaryData);
     }
-    // console.log(temporaryData);
-
-    // Save the cart items into React state
-    setCartData(temporaryData);
-  }, [cartItems]);
+  }, [cartItems, products]);
 
   return (
     <div className="border-t pt-14">

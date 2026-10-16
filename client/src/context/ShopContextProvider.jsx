@@ -64,15 +64,44 @@ const ShopContextProvider = (props) => {
       }
     } else {
       // Product does not exist in the cart yet
-      // Create an empty object for this product
-      cartData[itemId] = {};
       // Add the selected size with quantity 1
-      cartData[itemId][size] = 1;
+      cartData[itemId] = {
+        [size]: 1,
+      };
     }
 
-    // console.log(cartData);
-    // Save the updated cart back into React state
-    setCartItems(cartData);
+    // Check whether the customer is logged in
+    if (token) {
+      try {
+        // Send the product ID and selected size to the backend
+        const response = await axios.post(
+          backendUrl + "/api/cart/add",
+          { itemId, size },
+          { headers: { token } },
+        );
+
+        // Check whether the product was successfully added
+        if (response.data.success) {
+          // Update React state after Firestore succeeds
+          setCartItems(cartData);
+
+          // Display a success message
+          toast.success(response.data.message);
+        } else {
+          // Display the backend error message
+          toast.error(response.data.message);
+        }
+      } catch (err) {
+        console.error("Add To Cart Error", err);
+        toast.error(
+          err.response?.data?.message ||
+            "Product could not be added to the cart.",
+        );
+      }
+    } else {
+      // Allow guests to add products to their local cart
+      setCartItems(cartData);
+    }
   };
 
   // Calculate the total number of products in the cart.
@@ -103,16 +132,60 @@ const ShopContextProvider = (props) => {
   // size = product size
   // quantity = new quantity
   const updateQuantity = async (itemId, size, quantity) => {
+    // Make sure the quantity is valid
+    if (!Number.isInteger(quantity) || quantity < 0) {
+      toast.error("Invalid product quantity");
+      return;
+    }
     // Make a copy of the current cart
     let cartData = structuredClone(cartItems);
 
-    // Update the quantity for this product and size
-    cartData[itemId][size] = quantity;
+    // Check whether the product exists in the cart
+    if (!cartData[itemId]) {
+      return;
+    }
 
-    // Save the updated cart
-    setCartItems(cartData);
+    // Remove the selected size if quantity is zero
+    if (quantity === 0) {
+      delete cartData[itemId][size];
+
+      // Remove the product if no sizes remain
+      if (Object.keys(cartData[itemId]).length === 0) {
+        delete cartData[itemId];
+      }
+    } else {
+      //Update the quatity for this product and size
+      cartData[itemId][size] = quantity;
+    }
+
+    // Check whether the customer is logged in
+    if (token) {
+      try {
+        // Save the updated quantity to Firestore
+        const response = await axios.post(
+          backendUrl + "/api/cart/update",
+          { itemId, size, quantity },
+          { headers: { token } },
+        );
+
+        // Update React state only if Firestore succeeds
+        if (response.data.success) {
+          setCartItems(cartData);
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (err) {
+        console.error("Update Quantity Error", err);
+        toast.error(
+          err.response?.data?.message ||
+            "product quantiy could not be updated.",
+        );
+      }
+    } else {
+      // Update the local cart for guests
+      setCartItems(cartData);
+    }
   };
-
   // Calculate the total price of all products in the cart
   const getCartAmount = () => {
     // Start the total amount at $0
@@ -169,6 +242,32 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  // Retrieve the logged-in customer's cart from Firestore
+  const getUserCart = async (token) => {
+    try {
+      // Send a request to retrieve the user's saved cart
+      const response = await axios.post(
+        backendUrl + "/api/cart/get",
+        {},
+        { headers: { token } },
+      );
+      // Check whether the request was successful
+      if (response.data.success) {
+        // Store the retrieved cart in React state
+        setCartItems(response.data.cartData || {});
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (err) {
+      console.error("Get User Cart Error:", err);
+
+      // Display the backend error message or a fallback message
+      toast.error(
+        err.response?.data?.message || "Failed to load your shopping cart.",
+      );
+    }
+  };
+
   useEffect(() => {
     getProductsData();
   }, []);
@@ -176,8 +275,9 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     if (!token && localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
+      getUserCart(localStorage.getItem("token"));
     }
-  });
+  }, []);
 
   // Put all the data and functions that
   // other components need to access into one object
