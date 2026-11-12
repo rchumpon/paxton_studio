@@ -3,7 +3,7 @@ const Joi = require("joi");
 // Define product validation schema
 const productSchema = Joi.object({
   // Product name is required
-  username: Joi.string().required(),
+  name: Joi.string().required(),
 
   // Product description is required
   description: Joi.string().required(),

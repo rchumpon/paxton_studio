@@ -2,6 +2,7 @@ const express = require("express");
 const productController = require("../controllers/productController");
 const upload = require("../middleware/multer");
 const { adminAuth } = require("../middleware/adminAuth");
+const { userAuth } = require("../middleware/userAuth");
 
 module.exports = () => {
   const router = express.Router();
@@ -26,6 +27,19 @@ module.exports = () => {
 
     // Call the controller after Multer processes the images
     productController.addProduct,
+  );
+
+  // Admin only: update an existing product
+  router.put(
+    "/:productId",
+    adminAuth,
+    upload.fields([
+      { name: "image1", maxCount: 1 },
+      { name: "image2", maxCount: 1 },
+      { name: "image3", maxCount: 1 },
+      { name: "image4", maxCount: 1 },
+    ]),
+    productController.updateProduct,
   );
 
   // Admin only: remove a product by its Firestore document ID

@@ -23,7 +23,7 @@ const uploadToCloudinary = (file) => {
   return new Promise((resolve, reject) => {
     // Ensure Multer provided the image buffer
     if (!file || !Buffer.isBuffer(file.buffer)) {
-      return reject(newError("Image buffer is missing"));
+      return reject(new Error("Image buffer is missing"));
     }
 
     // Create a Cloudinary upload stream
@@ -59,6 +59,110 @@ const uploadToCloudinary = (file) => {
 // ==========================================
 
 module.exports = {
+  // ---------------------------------------------------
+  // Get all product with sorting and composite indexes
+  // GET /api/product/list
+  // ---------------------------------------------------
+
+  async listProducts(req, res, next) {
+    try {
+      // Get optional query parameters
+      const { category, sort } = req.query;
+
+      // Get the products collection from Firestore
+      const productRef = db.collection("products");
+
+      // Store the selected query result
+      let snapshot;
+
+      // Composite index 1: Filter by category and sort by price
+      if (category && sort === "price") {
+        snapshot = await productRef
+          .where("category", "==", category)
+          .orderBy("price", "asc")
+          .get();
+      }
+
+      // Composite index 2: Filter bestsellers and sort by newest
+      else if (sort === "bestseller") {
+        snapshot = await productRef
+          .where("bestseller", "==", true)
+          .orderBy("date", "desc")
+          .get();
+      }
+
+      // Default query: Sort all products by name (A-Z)
+      else {
+        // Query Firestore and sort products by name in ascending order (A-Z)
+        snapshot = await productRef.orderBy("name", "asc").get();
+      }
+
+      // Convert Firestore documents into JavaScript objects
+      const products = snapshot.docs.map((doc) => ({
+        // Include Firestore document ID
+        id: doc.id,
+
+        // Include all product fields
+        ...doc.data(),
+      }));
+
+      // Return the products to the client
+      return res.status(200).json({ success: true, products });
+    } catch (err) {
+      console.error("List Product Error:", err);
+
+      // Pass the error to your custom error handler
+      return next(
+        ApiError.internal("Product could not be listed at this time...", err),
+      );
+    }
+  },
+
+  // ----------------------------------
+  // Get a single product by ID
+  // GET /api/product/:productId
+  // ----------------------------------
+
+  async singleProduct(req, res, next) {
+    try {
+      // Get the product ID from the URL
+      const { productId } = req.params;
+
+      // Check if the product ID is provided
+      if (!productId || typeof productId !== "string") {
+        return next(ApiError.badRequest("Product ID is required"));
+      }
+
+      // Get a reference to the specific product document
+      const productRef = db.collection("products").doc(productId);
+
+      // Retrieve the product from Firestore
+      const snapshot = await productRef.get();
+
+      // Check if the product exists
+      if (!snapshot.exists) {
+        return next(ApiError.notFound("Product not found"));
+      }
+
+      // Convert Firestore document into a JavaScript object
+      const product = {
+        ...snapshot.data(),
+        id: snapshot.id,
+      };
+
+      // Return the product to the client
+      return res.status(200).json({
+        success: true,
+        product,
+      });
+    } catch (err) {
+      console.error("Single Product Error:", err);
+      return next(
+        ApiError.internal("Product could not be found at this time...", err),
+      );
+    }
+  },
+
   // ----------------------------------
   // Add a new product
   // POST /api/product/add
@@ -66,6 +170,9 @@ module.exports = {
 
   async addProduct(req, res, next) {
     try {
+      // Debug: Check the bestseller value received from frontend
+      console.log("Bestseller received:", req.body.bestseller);
+
       // Get the uploaded images from Multer
       // Filter out any image fields that were not provided
       const images = [
@@ -205,80 +312,75 @@ module.exports = {
   },
 
   // ----------------------------------
-  // Get all product
-  // GET /api/product/list
+  // Update an existing product
+  // PUT /api/product/:productId
   // ----------------------------------
-
-  async listProducts(req, res, next) {
-    try {
-      // Get the products collection from Firestore
-      const productRef = db.collection("products");
-
-      // Retrieve all product documents
-      const snapshot = await productRef.get();
-
-      // Convert Firestore documents into JavaScript objects
-      const products = snapshot.docs.map((doc) => ({
-        id: doc.id,
-
-        // Include all product fields
-        ...doc.data(),
-      }));
-
-      // Return the products to the client
-      return res.status(200).json({ success: true, products });
-    } catch (err) {
-      console.error("List Product Error:", err);
-
-      // Pass the error to your custom error handler
-      return next(
-        ApiError.internal("Product could not be listed at this time...", err),
-      );
-    }
-  },
-
-  // ----------------------------------
-  // Get a single product by ID
-  // GET /api/product/:productId
-  // ----------------------------------
-
-  async singleProduct(req, res, next) {
+  async updateProduct(req, res, next) {
     try {
       // Get the product ID from the URL
       const { productId } = req.params;
 
-      // Check if the product ID is provided
-      if (!productId || typeof productId !== "string") {
-        return next(ApiError.badRequest("Product ID is required"));
+      // Get the updated product information
+      const {
+        name,
+        description,
+        price,
+        category,
+        subCategory,
+        sizes,
+        bestseller,
+      } = req.body;
+
+      // Validate product ID
+      if (!productId || !productId.trim()) {
+        return res.status(400).json({
+          success: false,
+          message: "Product ID is required",
+        });
       }
 
-      // Get a reference to the specific product document
+      // Reference the product document in Firestore
       const productRef = db.collection("products").doc(productId);
 
-      // Retrieve the product from Firestore
-      const snapshot = await productRef.get();
+      // Check whether the product exists
+      const productDoc = await productRef.get();
 
-      // Check if the product exists
-      if (!snapshot.exists) {
-        return next(ApiError.notFound("Product not found"));
+      if (!productDoc.exists) {
+        return res.status(404).json({
+          success: false,
+          message: "Product not found",
+        });
       }
 
-      // Convert Firestore document into a JavaScript object
-      const product = {
-        ...snapshot.data(),
-        id: snapshot.id,
-      };
+      // Build an object containing only provided fields
+      const updatedData = {};
 
-      // Return the product to the client
+      if (name !== undefined) updatedData.name = name;
+      if (description !== undefined) updatedData.description = description;
+      if (price !== undefined) updatedData.price = price;
+      if (category !== undefined) updatedData.category = category;
+      if (subCategory !== undefined) updatedData.subCategory = subCategory;
+      if (sizes !== undefined) updatedData.sizes = sizes;
+      if (bestseller !== undefined) updatedData.bestseller = bestseller;
+
+      // Prevent empty updates
+      if (Object.keys(updatedData).length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "No product fields provided for update",
+        });
+      }
+
+      // Update the product in Firestore
+      await productRef.update(updatedData);
+
+      // Return a successful response
       return res.status(200).json({
         success: true,
-        product,
+        message: "Product updated successfully",
       });
     } catch (err) {
-      console.error("Single Product Error:", err);
-      return next(
-        ApiError.internal("Product could not be found at this time...", err),
-      );
+      return next(ApiError.internal("Product could not be updated.", err));
     }
   },
 

@@ -78,6 +78,7 @@ module.exports = {
 
     // Set the token lifetime to 24 hours
     // 60 seconds × 60 minutes × 24 hours = 86,400 seconds
+
     const tokenExpireTime = 60 * 60 * 24; // TTL (Time to Live)
 
     // Sign the payload using the JWT secret

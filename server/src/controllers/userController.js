@@ -21,7 +21,7 @@ module.exports = {
 
       // Compare login credentials with environment variables
       if (
-        email !== process.env.ADMIN_EMAIL &&
+        email !== process.env.ADMIN_EMAIL ||
         password !== process.env.ADMIN_PASSWORD
       ) {
         return res.status(401).json({

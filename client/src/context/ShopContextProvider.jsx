@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 
 const ShopContextProvider = (props) => {
   const currency = "$";
+
   // Fixed delivery fee
   const delivery_fee = 10;
 
@@ -296,6 +297,7 @@ const ShopContextProvider = (props) => {
 
     // Cart
     cartItems,
+    setCartItems,
     addToCart,
     getCartCount,
     updateQuantity,

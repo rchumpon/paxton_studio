@@ -1,13 +1,13 @@
-import { useContext } from "react";
+import axios from "axios";
 import { ShopContext } from "../context/ShopContext";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import Title from "../components/common/Title";
 import ProductItem from "../components/layout/ProductItem";
 
 const Collection = () => {
   // Get product data and search information from ShopContext
-  const { products, search, showSearch } = useContext(ShopContext);
+  const { products, search, showSearch, backendUrl } = useContext(ShopContext);
 
   //=====================================
   // State
@@ -27,6 +27,9 @@ const Collection = () => {
 
   // Store the selected sorting option "relevant", "low-high", or "high"
   const [sortType, setSortType] = useState("relevant");
+
+  // Store products retrieved using the Firestore composite-index query
+  const [indexedProducts, setIndexedProducts] = useState(null);
 
   //=====================================
   // Category Filter
@@ -69,12 +72,11 @@ const Collection = () => {
     let productsCopy = products.slice();
 
     // Search Filter - Only search if the SearchBar is open and the user has typed something
-    if (showSearch && search)
-      [
-        (productsCopy = productsCopy.filter((item) =>
-          item.name.toLowerCase().includes(search.toLowerCase()),
-        )),
-      ];
+    if (showSearch && search) {
+      productsCopy = productsCopy.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
 
     // Filter by category
     if (category.length > 0) {
@@ -133,6 +135,37 @@ const Collection = () => {
   useEffect(() => {
     sortProduct();
   }, [sortType]);
+
+  //=====================================
+  // Firestore Composite Index Query
+  //=====================================
+
+  useEffect(() => {
+    const fetchIndexedProducts = async () => {
+      // Use Firestore when one category is selected
+      // and the user selects price: low to high
+      if (category.length === 1 && sortType === "low-high") {
+        try {
+          console.log("Fetching sorted products from Firestore...");
+
+          const response = await axios.get(`${backendUrl}/api/product/list`, {
+            params: { category: category[0], sort: "price" },
+          });
+
+          if (response.data.success) {
+            // Store products returned by the Firestore query
+            setIndexedProducts(response.data.products);
+          }
+        } catch (err) {
+          console.error("Firestore index query error:", err);
+          setIndexedProducts(null);
+        }
+      } else {
+        setIndexedProducts(null);
+      }
+    };
+    fetchIndexedProducts();
+  }, [category, sortType, backendUrl]);
 
   //=====================================
   // Display Page
@@ -250,15 +283,31 @@ const Collection = () => {
 
         {/* Mapping Products*/}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-          {filterProducts.map((item, index) => (
-            <ProductItem
-              key={index}
-              name={item.name}
-              id={item.id}
-              price={item.price}
-              image={item.image}
-            />
-          ))}
+          {(indexedProducts ?? filterProducts)
+            .filter((item) => {
+              // Keep the existing search filter
+              const matchesSearch =
+                !showSearch ||
+                !search ||
+                item.name.toLowerCase().includes(search.toLowerCase());
+
+              // Keep the existing subcategory filter
+              const matchesSubCategory =
+                subCategory.length === 0 ||
+                subCategory.includes(item.subCategory);
+
+              return matchesSearch && matchesSubCategory;
+            })
+
+            .map((item) => (
+              <ProductItem
+                key={item.id}
+                name={item.name}
+                id={item.id}
+                price={item.price}
+                image={item.image}
+              />
+            ))}
         </div>
       </div>
     </div>

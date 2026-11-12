@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Add from "./pages/Add";
+import Edit from "./pages/Edit";
 import List from "./pages/List";
 import Orders from "./pages/Orders";
 import Login from "./components/Login";
@@ -18,7 +19,11 @@ const App = () => {
   );
 
   useEffect(() => {
-    localStorage.setItem("token", token);
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
   }, [token]);
 
   return (
@@ -40,6 +45,10 @@ const App = () => {
                 <Route path="/" element={<Navigate to="/add" replace />} />
                 {/* Admin pages */}
                 <Route path="/add" element={<Add token={token} />} />
+                <Route
+                  path="/edit/:productId"
+                  element={<Edit token={token} />}
+                />
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/orders" element={<Orders token={token} />} />
               </Routes>

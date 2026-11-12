@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { backendUrl, currency } from "../config/config";
 import { toast } from "react-toastify";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const List = ({ token }) => {
   // Store the products retrieved from Firestore
@@ -31,6 +32,9 @@ const List = ({ token }) => {
   // Remove a product using its Firestore document ID
   const removeProduct = async (id) => {
     try {
+      console.log("Product ID:", id);
+      console.log("Token exists:", Boolean(token));
+
       // Send DELETE request with the product ID in the URL
       const response = await axios.delete(backendUrl + "/api/product/" + id, {
         headers: { token },
@@ -95,15 +99,25 @@ const List = ({ token }) => {
               {currency} {item.price}
             </p>
 
-            {/* Delete Product */}
-            <div className="flex justify-center">
+            {/* Edit and Delete Product buttons*/}
+            <div className="flex items-center justify-center gap-4 px-3 py-2">
+              {/* Edit Product */}
+              <Link
+                to={`/edit/${item.id}`}
+                className="flex items-center justify-center cursor-pointer text-blue-500 hover:text-blue-700 transition-colors"
+                aria-label={`Edit ${item.name}`}
+              >
+                <FaEdit className="w-4 h-4" />
+              </Link>
+
+              {/* Delete Product */}
               <button
                 type="button"
                 onClick={() => removeProduct(item.id)}
-                className="cursor-pointer text-lg text-red-500 hover:text-red-700"
+                className="flex items-center gap-3 cursor-pointer text-lg text-red-500 hover:text-red-700"
                 aria-label={`Delete ${item.name}`}
               >
-                <FaTrash />
+                <FaTrash className="w-4 h-4" />
               </button>
             </div>
             {/* <p

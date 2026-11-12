@@ -26,8 +26,6 @@ module.exports = {
       // Verify the token using the same secret used to sign it
       const tokenDecoded = jwt.verify(token, config.authentication.jwtSecret);
 
-      console.log("Decoded User ID:", tokenDecoded.id);
-
       // Store the authenticated user's ID in the request
       req.userId = tokenDecoded.id;
       return next();

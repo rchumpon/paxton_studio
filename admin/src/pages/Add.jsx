@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaCloudUploadAlt } from "react-icons/fa";
+import { FaCloudUploadAlt, FaCheck } from "react-icons/fa";
 import axios from "axios";
 import { backendUrl } from "../config/config";
 import { toast } from "react-toastify";
@@ -18,8 +18,22 @@ const Add = ({ token }) => {
   const [bestSeller, setBestSeller] = useState(false);
   const [sizes, setSizes] = useState([]);
 
+  // Loading state
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+
+    // Prevent multiple submissions
+    if (isLoading) return null;
+
+    // Make sure at least one product image has been selected
+    if (!image1 && !image2 && !image3 && !image4) {
+      return toast.error("Please upload at least one product image");
+    }
+    // Start loading
+    setIsLoading(true);
+
     try {
       // Create FormData to store product details and images
       const formData = new FormData();
@@ -66,9 +80,23 @@ const Add = ({ token }) => {
         toast.error(response.data.message);
       }
     } catch (err) {
-      console.error("Add Product Error", err);
-      // Display backend error message
-      toast.error(err.response?.data?.message || err.message);
+      // Display the backend error response
+      console.error("Backend Error:", err.response?.data);
+
+      // Extract validation errors or the backend error message
+      const errorMessage =
+        err.response?.data?.errors?.join(", ") ||
+        err.response?.data?.message ||
+        err.message;
+
+      // Display the error notification
+      toast.error(errorMessage);
+
+      // console.error("Add Product Error", err);
+
+      // toast.error(err.response?.data?.message || err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -332,11 +360,14 @@ const Add = ({ token }) => {
           Add to bestseller
         </label>
       </div>
+
       <button
         type="submit"
-        className="w-28 py-3 mt-4 bg-primary text-secondary rounded-lg"
+        disabled={isLoading}
+        className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary hover:bg-slate-800 text-secondary rounded-lg transition duration-200"
       >
-        Add
+        <FaCheck className="text-green-500" />
+        {isLoading ? "Adding..." : "Add Product"}
       </button>
     </form>
   );

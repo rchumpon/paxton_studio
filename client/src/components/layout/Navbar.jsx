@@ -24,8 +24,14 @@ function Navbar() {
 
   const logout = () => {
     navigate("/login");
+
+    // Remove JWT token from localStorage
     localStorage.removeItem("token");
+
+    // Clear authentication state
     setToken("");
+
+    // Clear cart items
     setCartItems({});
   };
 

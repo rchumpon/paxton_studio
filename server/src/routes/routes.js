@@ -7,6 +7,7 @@ const authRoute = require("./authRoute");
 const productRoute = require("./productRoute");
 const userRoute = require("./userRoute");
 const cartRoute = require("./cartRoute");
+const orderRoute = require("./orderRoute");
 
 // Endpoints for "/" path
 module.exports = () => {
@@ -24,6 +25,8 @@ module.exports = () => {
   router.use("/user", userRoute());
 
   router.use("/cart", cartRoute());
+
+  router.use("/order", orderRoute());
 
   return router;
 };

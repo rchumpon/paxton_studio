@@ -14,13 +14,40 @@ const Product = () => {
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
 
-  const fetchProductData = async () => {
-    products.map((item) => {
+  const fetchProductData = () => {
+    products.forEach((item) => {
       if (item.id === productId) {
-        setProductData(item);
-        // console.log(item);
+        // Convert product sizes string into an array
+        let parsedSizes = [];
+
+        if (Array.isArray(item.sizes)) {
+          // Sizes are already an array
+          parsedSizes = item.sizes;
+        } else if (typeof item.sizes === "string") {
+          if (item.sizes.trim().startsWith("[")) {
+            // Convert a JSON string into an array
+            try {
+              const result = JSON.parse(item.sizes);
+              parsedSizes = Array.isArray(result) ? result : [];
+            } catch (err) {
+              console.error("Invalid product sizes:", err);
+            }
+          } else {
+            // Convert a comma-separated string into an array
+            parsedSizes = item.sizes
+              .split(",")
+              .map((size) => size.trim())
+              .filter(Boolean);
+          }
+        }
+
+        // Store the product with sizes as an array
+        setProductData({
+          ...item,
+          sizes: parsedSizes,
+        });
+        // Set the first product image
         setImage(item.image[0]);
-        return null;
       }
     });
   };
