@@ -69,33 +69,66 @@ const PlaceOrder = () => {
         }
       }
 
-      // console.log(orderItems);
-
-      // Prepare order information
+      // Prepare order information to send to the backend
       let orderData = {
         address: formData,
         items: orderItems,
         amount: getCartAmount() + delivery_fee,
       };
 
+      // Process the order based on the selected payment method
       switch (method) {
+        // --------------------------------------
+        // Cash on Delivery (COD)
         // API calls for Cash on delivery
+        // --------------------------------------
         case "cod": {
+          // Send the order information to the backend
           const response = await axios.post(
             backendUrl + "/api/order/place",
             orderData,
             { headers: { token } },
           );
 
+          // Check whether the order was placed successfully
           if (response.data.success) {
+            // Clear the shopping cart after placing the order
             setCartItems({});
+
+            // Redirect the customer to their orders page
             navigate("/orders");
           } else {
+            // Display the backend error message
             toast.error(response.data.message);
           }
-
           break;
         }
+        // --------------------------------------
+        // Stripe Payment
+        // API call for Stripe payment
+        // --------------------------------------
+        case "stripe": {
+          // Request a Stripe Checkout Session from the backend
+          const responseStripe = await axios.post(
+            backendUrl + "/api/order/stripe",
+            orderData,
+            { headers: { token } },
+          );
+
+          // Check whether the Stripe Checkout Session was created
+          if (responseStripe.data.success && responseStripe.data.sessionUrl) {
+            // Redirect the customer to Stripe's secure payment page
+            window.location.replace(responseStripe.data.sessionUrl);
+          } else {
+            // Display the backend error message
+            toast.error(
+              responseStripe.data.message || "Unable to start Stripe payment",
+            );
+          }
+          break;
+        }
+
+        // Handle invalid payment methods
         default:
           toast.error("Please select a valid payment method");
           break;

@@ -15,10 +15,12 @@ module.exports = () => {
   // Payment features
   router.post("/place", userAuth, orderController.placeOrder);
   router.post("/stripe", userAuth, orderController.placeOrderStripe);
-  router.post("/razorpay", userAuth, orderController.placeOrderRazorpay);
 
   // User Features
   router.post("/userorders", userAuth, orderController.userOrders);
+
+  // Verify Stripe payment for an authenticated user
+  router.post("/verifyStripe", userAuth, orderController.verifyStripe);
 
   return router;
 };
