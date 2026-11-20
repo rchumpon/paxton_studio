@@ -14,6 +14,7 @@ import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./pages/MainLayout";
 import Verify from "./pages/Verify";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/verify" element={<Verify />} />
         </Route>

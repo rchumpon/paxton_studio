@@ -211,9 +211,9 @@ export const products = [
   },
   {
     id: "aaaak",
-    name: "Men's Beige Oversized Cotton T-Shirt with Maroon Three-Quarter Sleeves",
+    name: "Men's Beige and Maroon Raglan Sleeve T-Shirt",
     description:
-      "A stylish oversized beige cotton T-shirt featuring contrasting maroon three-quarter sleeves and a classic round neck for a relaxed, modern casual look.",
+      "A stylish beige T-shirt featuring contrasting maroon raglan sleeves, a classic round neck, and a subtle Boston graphic print for a sporty and comfortable everyday look.",
     price: 220,
     image: [p_img11],
     category: "Men",
@@ -237,9 +237,9 @@ export const products = [
   },
   {
     id: "aaaam",
-    name: "Women Round Neck Cotton Top",
+    name: "Women's Light Blue Relaxed Fit Short-Sleeve Blouse",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish light blue blouse featuring a relaxed fit, V-neck collar, and loose short sleeves for an effortless, elegant everyday look.",
     price: 130,
     image: [p_img13],
     category: "Women",
@@ -250,9 +250,9 @@ export const products = [
   },
   {
     id: "aaaan",
-    name: "Boy Round Neck Pure Cotton T-shirt",
+    name: "Boys' Navy Blue Textured Short-Sleeve Shirt",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish navy blue button-up shirt featuring a textured design, relaxed fit, and short sleeves for a smart yet comfortable everyday look.",
     price: 160,
     image: [p_img14],
     category: "Kids",
@@ -263,9 +263,9 @@ export const products = [
   },
   {
     id: "aaaao",
-    name: "Men Tapered Fit Flat-Front Trousers",
+    name: "Men's Navy Blue Slim Fit Jogger Pants",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "Stylish navy blue jogger pants featuring an adjustable drawstring waist, side pockets, and a tapered fit for a sporty and comfortable everyday look.",
     price: 140,
     image: [p_img15],
     category: "Men",
@@ -276,9 +276,9 @@ export const products = [
   },
   {
     id: "aaaap",
-    name: "Girls Round Neck Cotton Top",
+    name: "Girls' White Ribbed Puff-Sleeve Top",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A cute white ribbed top featuring delicate puff sleeves, a round neckline, and ruffle trims for a sweet and comfortable everyday look.",
     price: 170,
     image: [p_img16],
     category: "Kids",
@@ -289,9 +289,9 @@ export const products = [
   },
   {
     id: "aaaaq",
-    name: "Men Tapered Fit Flat-Front Trousers",
+    name: "Men's Black Slim Fit Jogger Pants with Graphic Print",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "Stylish black jogger pants featuring a modern graphic print, adjustable drawstring waist, and tapered fit for a sporty and comfortable everyday look.",
     price: 150,
     image: [p_img17],
     category: "Men",
@@ -302,9 +302,9 @@ export const products = [
   },
   {
     id: "aaaar",
-    name: "Boy Round Neck Pure Cotton T-shirt",
+    name: "Boys' White Round Neck T-Shirt with Goal Graphic Print",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A sporty white T-shirt featuring a bold GOAL! graphic print, classic round neck, and relaxed fit for a comfortable everyday casual look.",
     price: 180,
     image: [p_img18],
     category: "Kids",
@@ -315,9 +315,9 @@ export const products = [
   },
   {
     id: "aaaas",
-    name: "Boy Round Neck Pure Cotton T-shirt",
+    name: "Boys' Black Basic Round Neck T-Shirt",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A classic black T-shirt featuring a simple round neck, short sleeves, and relaxed fit for a comfortable and versatile everyday look.",
     price: 160,
     image: [p_img19],
     category: "Kids",
@@ -328,9 +328,9 @@ export const products = [
   },
   {
     id: "aaaat",
-    name: "Women Palazzo Pants with Waist Belt",
+    name: "Women's Black and White Leopard Print Wide-Leg Pants",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "Stylish wide-leg pants featuring a bold black and white leopard print, a comfortable relaxed fit, and practical side pockets for a chic everyday look.",
     price: 190,
     image: [p_img20],
     category: "Women",
@@ -341,9 +341,9 @@ export const products = [
   },
   {
     id: "aaaau",
-    name: "Women Zip-Front Relaxed Fit Jacket",
+    name: "Women's Burgundy Full-Zip Fleece Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish burgundy fleece jacket featuring a full-length zipper, stand collar, and practical side pockets for a warm, comfortable everyday look.",
     price: 170,
     image: [p_img21],
     category: "Women",
@@ -354,9 +354,9 @@ export const products = [
   },
   {
     id: "aaaav",
-    name: "Women Palazzo Pants with Waist Belt",
+    name: "Women's Navy Blue Wide-Leg Palazzo Pants",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish burgundy fleece jacket featuring a full-length zipper, stand collar, and practical side pockets for a warm, comfortable everyday look.",
     price: 200,
     image: [p_img22],
     category: "Women",
@@ -367,9 +367,9 @@ export const products = [
   },
   {
     id: "aaaaw",
-    name: "Boy Round Neck Pure Cotton T-shirt",
+    name: "Boys' Red Sleeveless Tank Top with USA Graphic Print",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A sporty red sleeveless tank top featuring a bold USA graphic print, relaxed fit, and lightweight design for comfortable everyday wear and active play.",
     price: 180,
     image: [p_img23],
     category: "Kids",
@@ -380,9 +380,9 @@ export const products = [
   },
   {
     id: "aaaax",
-    name: "Boy Round Neck Pure Cotton T-shirt",
+    name: "Boys' White Striped Pokémon Pikachu Baseball Jersey",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish white baseball jersey featuring black vertical stripes, yellow button details, and a playful Pikachu graphic for a sporty and fun everyday look.",
     price: 210,
     image: [p_img24],
     category: "Kids",
@@ -393,9 +393,9 @@ export const products = [
   },
   {
     id: "aaaay",
-    name: "Girls Round Neck Cotton Top",
+    name: "Girls' Pink Oversized Cropped T-Shirt with Slogan Print",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A cute pink cropped T-shirt featuring a relaxed oversized fit, classic round neck, and playful slogan print for a trendy and comfortable everyday look.",
     price: 190,
     image: [p_img25],
     category: "Kids",
@@ -406,9 +406,9 @@ export const products = [
   },
   {
     id: "aaaaz",
-    name: "Women Zip-Front Relaxed Fit Jacket",
+    name: "Women's Light Blue Cropped Denim Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish light blue denim jacket featuring a cropped fit, classic collar, button-front design, and chest pockets for a trendy, casual everyday look.",
     price: 220,
     image: [p_img26],
     category: "Women",
@@ -432,9 +432,9 @@ export const products = [
   },
   {
     id: "aaabb",
-    name: "Men Slim Fit Relaxed Denim Jacket",
+    name: "Men's Mustard Yellow Quilted Puffer Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish mustard yellow puffer jacket featuring a quilted design, full-length zipper, stand collar, and practical side pockets for a warm and comfortable everyday look.",
     price: 230,
     image: [p_img28],
     category: "Men",
@@ -471,9 +471,9 @@ export const products = [
   },
   {
     id: "aaabe",
-    name: "Men Round Neck Pure Cotton T-shirt",
+    name: "Men's White Puma Graphic Print Round Neck T-Shirt",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A sporty white T-shirt featuring a bold turquoise Puma logo, classic round neck, and short sleeves for a stylish and comfortable everyday look.",
     price: 220,
     image: [p_img31],
     category: "Men",
@@ -510,9 +510,9 @@ export const products = [
   },
   {
     id: "aaabh",
-    name: "Women Round Neck Cotton Top",
+    name: "Women's Grey V-Neck Short-Sleeve T-Shirt",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish grey T-shirt featuring a classic V-neck, short sleeves, and relaxed fit for a comfortable and versatile everyday look.",
     price: 260,
     image: [p_img34],
     category: "Women",
@@ -523,9 +523,9 @@ export const products = [
   },
   {
     id: "aaabi",
-    name: "Women Zip-Front Relaxed Fit Jacket",
+    name: "Women's Teal Blue Nike Full-Zip Track Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A sporty teal blue track jacket featuring a bold Nike logo, full-length zipper, stand collar, and ribbed cuffs for a stylish and comfortable everyday look.",
     price: 240,
     image: [p_img35],
     category: "Women",
@@ -536,9 +536,9 @@ export const products = [
   },
   {
     id: "aaabj",
-    name: "Women Zip-Front Relaxed Fit Jacket",
+    name: "Women's Light Pink Hooded Puffer Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish light pink puffer jacket featuring a cosy faux-fur-lined hood, quilted design, and front zipper for warmth and comfort during colder days.",
     price: 270,
     image: [p_img36],
     category: "Women",
@@ -575,9 +575,9 @@ export const products = [
   },
   {
     id: "aaabm",
-    name: "Men Printed Plain Cotton Shirt",
+    name: "Men's Cream Long-Sleeve Button-Up Shirt with Subtle Print",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish cream button-up shirt featuring a subtle all-over print, classic collar, and long sleeves for a smart and versatile everyday look.",
     price: 260,
     image: [p_img39],
     category: "Men",
@@ -588,9 +588,9 @@ export const products = [
   },
   {
     id: "aaabn",
-    name: "Men Slim Fit Relaxed Denim Jacket",
+    name: "Men's Black Sleeveless Hooded Zip-Up Vest",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish black sleeveless vest featuring an adjustable hood, full-length zipper, and practical zippered pockets for a sporty and comfortable everyday look.",
     price: 290,
     image: [p_img40],
     category: "Men",
@@ -601,9 +601,9 @@ export const products = [
   },
   {
     id: "aaabo",
-    name: "Men Round Neck Pure Cotton T-shirt",
+    name: "Men's Navy Blue Crew Neck T-Shirt with Vertical Graphic Print",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish navy blue T-shirt featuring a unique vertical graphic print, classic round neck, and short sleeves for a modern and comfortable everyday look.",
     price: 270,
     image: [p_img41],
     category: "Men",
@@ -627,9 +627,9 @@ export const products = [
   },
   {
     id: "aaabq",
-    name: "Kid Tapered Slim Fit Trouser",
+    name: "Girls' Blue High-Waisted Straight-Leg Jeansr",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "Stylish blue denim jeans featuring an elasticated high waistband, classic back pockets, and a relaxed straight-leg fit for comfortable everyday wear.",
     price: 280,
     image: [p_img43],
     category: "Kids",
@@ -640,9 +640,9 @@ export const products = [
   },
   {
     id: "aaabr",
-    name: "Women Zip-Front Relaxed Fit Jacket",
+    name: "Women's Light Pink Lightweight Zip-Up Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish light pink jacket featuring a stand collar, front zipper, adjustable drawstring hem, and relaxed fit for a comfortable and trendy everyday look.",
     price: 310,
     image: [p_img44],
     category: "Women",
@@ -653,9 +653,9 @@ export const products = [
   },
   {
     id: "aaabs",
-    name: "Men Slim Fit Relaxed Denim Jacket",
+    name: "Men's Olive Green and Grey Hooded Puffer Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish two-tone puffer jacket featuring olive green and grey panels, a quilted design, adjustable hood, and full-length zipper for warmth and everyday comfort.",
     price: 290,
     image: [p_img45],
     category: "Men",
@@ -666,9 +666,9 @@ export const products = [
   },
   {
     id: "aaabt",
-    name: "Men Slim Fit Relaxed Denim Jacket",
+    name: "Men's Dark Navy Suede-Look Zip-Up Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish dark navy jacket featuring a soft suede-like texture, stand collar, full-length zipper, and practical zippered chest pockets for a smart and comfortable everyday look.",
     price: 320,
     image: [p_img46],
     category: "Men",
@@ -679,9 +679,9 @@ export const products = [
   },
   {
     id: "aaabu",
-    name: "Kid Tapered Slim Fit Trouser",
+    name: "Girls' Light Pink Geometric Print Jogger Pants",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "Stylish light pink jogger pants featuring a subtle geometric print, adjustable drawstring waist, and elasticated cuffs for a cute and comfortable everyday look.",
     price: 300,
     image: [p_img47],
     category: "Kids",
@@ -692,9 +692,9 @@ export const products = [
   },
   {
     id: "aaabv",
-    name: "Men Slim Fit Relaxed Denim Jacket",
+    name: "Men's Classic Blue Denim Trucker Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish blue denim jacket featuring a classic collar, button-front design, long sleeves, and chest pockets for a timeless and versatile everyday look.",
     price: 330,
     image: [p_img48],
     category: "Men",
@@ -705,9 +705,9 @@ export const products = [
   },
   {
     id: "aaabw",
-    name: "Kid Tapered Slim Fit Trouser",
+    name: "Girls' Black Leggings with Gold Heart Print",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "Stylish black leggings featuring a cute all-over gold heart print, slim fit, and comfortable elastic waistband for a playful everyday look.",
     price: 310,
     image: [p_img49],
     category: "Kids",
@@ -718,9 +718,9 @@ export const products = [
   },
   {
     id: "aaabx",
-    name: "Kid Tapered Slim Fit Trouser",
+    name: "Girls' Sage Green Textured Wide-Leg Culotte Pants",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "Stylish sage green culotte pants featuring a textured design, elastic waistband, and adjustable waist tie for a cute and comfortable everyday look.",
     price: 340,
     image: [p_img50],
     category: "Kids",
@@ -731,9 +731,9 @@ export const products = [
   },
   {
     id: "aaaby",
-    name: "Women Zip-Front Relaxed Fit Jacket",
+    name: "Women's Light Pink Zip-Up Bomber Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish light pink bomber jacket featuring a classic zip-front design, ribbed cuffs and hem, and practical side pockets for a trendy and comfortable everyday look.",
     price: 320,
     image: [p_img51],
     category: "Women",
@@ -744,9 +744,9 @@ export const products = [
   },
   {
     id: "aaabz",
-    name: "Men Slim Fit Relaxed Denim Jacket",
+    name: "Men's Dark Blue Classic Denim Trucker Jacket",
     description:
-      "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+      "A stylish dark blue denim jacket featuring a classic collar, button-front design, long sleeves, and practical pockets for a timeless and versatile everyday look.",
     price: 350,
     image: [p_img52],
     category: "Men",

@@ -1,3 +1,4 @@
+const { db } = require("../config/db");
 // Import custom error handler
 const ApiError = require("../utilities/ApiError");
 // Import JWT token utility
@@ -46,6 +47,43 @@ module.exports = {
     } catch (err) {
       console.error("Admin Login Error", err);
       return next(ApiError.internal("Admin login failed at this time...", err));
+    }
+  },
+
+  // --------------------------------------
+  // Get Logged-in User Profile
+  // GET /api/user/profile
+  // --------------------------------------
+
+  async getUserProfile(req, res, next) {
+    try {
+      // Get authenticated user ID from JWT middleware
+      const userId = req.userId;
+
+      // Retrieve the user document from Firestore
+      const userDoc = await db.collection("users").doc(userId).get();
+
+      // Check whether the user exists
+      if (!userDoc.exists) {
+        return next(ApiError.badRequest("User not found"));
+      }
+
+      // Get user information
+      const user = userDoc.data();
+
+      // Return only safe profile information
+      return res.status(200).json({
+        success: true,
+        user: {
+          id: userDoc.id,
+          username: user.username,
+          email: user.email,
+        },
+      });
+    } catch (error) {
+      console.error("Get User Profile Error:", error);
+
+      return next(ApiError.internal("Failed to get user profile", error));
     }
   },
 };
